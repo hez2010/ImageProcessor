@@ -1,0 +1,85 @@
+﻿<Window x:Class="ImageProcessor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageProcessor"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="图像处理工具 by 贺恩泽 17364025" Height="503.333" Width="809.167">
+    <Window.Resources>
+        <local:Visibility2BooleanConverter x:Key="Visibility2BooleanConverter"></local:Visibility2BooleanConverter>
+    </Window.Resources>
+    <Grid>
+        <Label x:Name="RenderLabel" Content="渲染中..." Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <StackPanel Margin="16,16,16,16.5">
+            <DockPanel>
+                <Label Content="图片路径："></Label>
+                <TextBox x:Name="FileName" Width="620" Margin="8,0"></TextBox>
+                <Button Content="读取" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="50" Click="ButtonLoad_Click"></Button>
+            </DockPanel>
+            <DockPanel>
+                <ListBox HorizontalAlignment="Left" Height="404" VerticalAlignment="Top" Width="200">
+                    <ListBox.IsEnabled>
+                        <Binding ElementName="RenderLabel" Path="Visibility" Converter="{StaticResource Visibility2BooleanConverter}">
+                            <Binding.ConverterParameter>
+                                <system:Boolean>true</system:Boolean>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </ListBox.IsEnabled>
+                    <DockPanel>
+                        <Button Content="撤销" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="50" Click="ButtonUndo_Click"/>
+                        <Button Content="重做" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="50" Click="ButtonRedo_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Button Content="图片信息" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64" Height="24" Click="ButtonInfo_Click"/>
+                        <Button Content="写出图片" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64" Height="24" Click="ButtonSave_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Slider x:Name="Threshold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="78" Maximum="255" SmallChange="1" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True"/>
+                        <Label Content="{Binding ElementName=Threshold, Path=Value}" HorizontalAlignment="Left" Width="30" VerticalAlignment="Top"/>
+                        <Button Content="二值化" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="24" Click="ButtonThreshold_Click"/>
+                    </DockPanel>
+                    <Button Content="灰阶" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="50" Click="ButtonGray_Click"/>
+                    <DockPanel>
+                        <Button Content="显示直方图" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonShowHist_Click"/>
+                        <Button Content="直方均衡化" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonEqualizeHist_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <TextBox x:Name="Salt" Text="0" Width="78" PreviewTextInput="TextBox_PreviewTextInput"></TextBox>
+                        <Button Content="添加椒盐噪声" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonAddSaltNoise_Click"></Button>
+                    </DockPanel>
+                    <Button Content="中值滤波" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonMedianFilter_Click"/>
+                    <DockPanel>
+                        <Button Content="图像相加" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonAdd_Click"/>
+                        <Button Content="图像相减" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonMinus_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Button Content="强调边缘" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonEmph_Click"/>
+                        <Button Content="图像锐化" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonSharp_Click"/>
+                    </DockPanel>
+                    <Button Content="DFT" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonDft_Click"/>
+                    <DockPanel>
+                        <Button Content="图像腐蚀" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonErode_Click"/>
+                        <Button Content="图像膨胀" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonDilate_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Button Content="开运算" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonOpen_Click"/>
+                        <Button Content="闭运算" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="24" Click="ButtonClose_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Button Content="图像分割（大津方法）" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Height="24" Click="ButtonDajin_Click"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <TextBox Width="30" x:Name="ImageWidth"></TextBox>
+                        <Label Content="×"></Label>
+                        <TextBox Width="30" x:Name="ImageHeight"></TextBox>
+                        <Button Content="裁剪" Width="40" Click="ButtonClip_Click"></Button>
+                        <Button Content="缩放" Width="40" Click="ButtonResize_Click"></Button>
+                    </DockPanel>
+                </ListBox>
+                <Canvas x:Name="BmpImg" VerticalAlignment="Top" Height="402" />
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>
